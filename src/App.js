@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Radium, { StyleRoot } from 'radium';
 import Person from './Person/Person';
 import UserInput from './UserInput/UserInput';
 import UserOutput from './UserOutput/UserOutput';
@@ -65,6 +66,15 @@ class App extends Component {
 
   render () {
 
+    const style = { 
+      backgroundColor: 'green',
+
+      ':hover': {
+        backgroundColor: 'lightgreen',
+        color: 'black',
+      }
+    };
+
     let persons = null;
 
     if ( this.state.showPersons ) {
@@ -81,6 +91,12 @@ class App extends Component {
       })}
       </div>
       );
+
+      style.backgroundColor = 'red';
+      style[':hover'] = {
+        backgroundColor: 'salmon',
+        color: 'black'
+      }
     }
 
     const charList = this.state.userInput.split('').map((ch, index) => {
@@ -91,9 +107,10 @@ class App extends Component {
     });
 
     return (
+      <StyleRoot>
       <div className="App">
         <h1>Hello my name is {this.state.persons[0].name}</h1>
-        <button onClick={() => this.togglePersonsHandler()}>Toggle Persons</button>
+        <button style={style} onClick={() => this.togglePersonsHandler()}>Toggle Persons</button>
         {persons}
         <UserInput 
           changed={this.usernameChangedHandler} 
@@ -108,9 +125,10 @@ class App extends Component {
         <Validation inputLength={this.state.userInput.length} />
         {charList}
       </div>
+      </StyleRoot>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
   }
 }
 
-export default App;
+export default Radium(App);
